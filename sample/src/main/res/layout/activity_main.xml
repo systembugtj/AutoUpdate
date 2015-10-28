@@ -6,30 +6,42 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+    tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnDialog"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="36dp"
-        android:layout_toRightOf="@+id/textView1"
-        android:text="对话框更新" />
+        android:text="Check Update: Dialog"
+        android:textAllCaps="false"
+        android:textSize="12sp" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnDialogAutoInstall"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_below="@+id/button1"
+        android:layout_below="@+id/btnDialog"
+        android:text="Check Update: Dialog(Auto Install)"
+        android:textAllCaps="false"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btnNotify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnDialogAutoInstall"
         android:layout_marginTop="34dp"
-        android:text="通知栏更新" />
+        android:text="Check Update: Notification"
+        android:textAllCaps="false"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btnNotifyAutoInstall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnNotify"
+        android:text="Check Update: Notification(Auto Install)"
+        android:textAllCaps="false"
+        android:textSize="12sp" />
 
 </RelativeLayout>
