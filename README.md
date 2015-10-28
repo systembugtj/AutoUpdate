@@ -7,17 +7,48 @@ Android应用自动更新库(android-auto-update)
 
 #### 1.导入library项目 ####
 
-提供2种版本检查方式,在你的项目中添加以下代码即可
+提供2种版本检查方式, 在你的项目中添加以下代码即可
 
 - 使用Dialog
-   
-    	`UpdateChecker.checkForDialog(this);`
+
+
+	```
+    	private static final String APP_UPDATE_SERVER_URL = "http://updatecheck";
+    	
+    	...
+    	
+    	updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateChecker.checkForDialog(getActivity(), APP_UPDATE_SERVER_URL);
+            }
+        });
+    	
+    	...
+	
+	```
 
 - 使用Notification
 
-	`UpdateChecker.checkForNotification(this);`
+	```
+    	private static final String APP_UPDATE_SERVER_URL = "http://updatecheck";
+    	
+    	...
+    	
+    	updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateChecker.checkForNotification(getActivity(), APP_UPDATE_SERVER_URL);
+            }
+        });
+    	
+    	...
+	
+	```
 
+服务端返回的JSON数据示例格式为：
 
+`{"url":"http://192.168.205.33:8080/Hello/medtime_v3.0.1_Other_20150116.apk","versionCode":2,"updateMessage":"版本更新信息"}`
 
 #### 2.添加权限 ####
 
@@ -31,7 +62,13 @@ Android应用自动更新库(android-auto-update)
 
 	`<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`
 
-#### 3.截图 ####
+#### 3.在AndroidManifest.xml中注册 DownloadService ####
+
+	`<service android:name="XXX.DownloadService" android:exported="true" />`
+	
+注：这里的`android:name`值根据你的实际情况填写。
+
+#### 4.效果图 ####
 ![screenshot](https://raw.github.com/feicien/android-auto-update/master/screenshots/sample.png)
 ![screenshot](https://raw.github.com/feicien/android-auto-update/master/screenshots/sample_htc.png)
 ![screenshot](https://raw.github.com/feicien/android-auto-update/master/screenshots/dialog.png)
@@ -42,9 +79,7 @@ Android应用自动更新库(android-auto-update)
 ![screenshot](https://raw.github.com/feicien/android-auto-update/master/screenshots/downloading_avd.png)
 
 
-#### 4.使用与参考的开源项目 ####
-
-
+#### 5.使用与参考的开源项目 ####
 
 1. [android-styled-dialogs](https://github.com/inmite/android-styled-dialogs "https://github.com/inmite/android-styled-dialogs") 使用该项目，可以在api 8+上显示 holo 风格的对话框，其它选择
 ，当然你也可以使用其它的开源项目比如：[ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock "https://github.com/JakeWharton/ActionBarSherlock") 和 [HoloEverywhere](https://github.com/Prototik/HoloEverywhere "https://github.com/Prototik/HoloEverywhere")
