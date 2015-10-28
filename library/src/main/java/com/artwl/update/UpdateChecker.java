@@ -26,7 +26,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 public class UpdateChecker extends Fragment {
 
@@ -121,7 +120,7 @@ public class UpdateChecker extends Fragment {
         mThread.start();
     }
 
-    protected String sendPost(String urlStr) {
+    private String sendPost(String urlStr) {
         HttpURLConnection uRLConnection = null;
         InputStream is = null;
         BufferedReader buffer = null;
@@ -215,7 +214,7 @@ public class UpdateChecker extends Fragment {
                     showDialog(updateMessage, apkUrl, mIsAutoInstall);
                 }
             } else {
-                //Toast.makeText(mContext, mContext.getString(R.string.app_no_new_update), Toast.LENGTH_SHORT).show();
+                Log.i(TAG, mContext.getString(R.string.app_no_new_update));
             }
 
         } catch (PackageManager.NameNotFoundException ignored) {
@@ -227,7 +226,7 @@ public class UpdateChecker extends Fragment {
     /**
      * Show dialog
      */
-    public void showDialog(String content, String apkUrl, boolean isAutoInstall) {
+    private void showDialog(String content, String apkUrl, boolean isAutoInstall) {
         UpdateDialog d = new UpdateDialog();
         Bundle args = new Bundle();
         args.putString(Constants.APK_UPDATE_CONTENT, content);
@@ -240,7 +239,7 @@ public class UpdateChecker extends Fragment {
     /**
      * Show Notification
      */
-    public void showNotification(String content, String apkUrl, boolean isAutoInstall) {
+    private void showNotification(String content, String apkUrl, boolean isAutoInstall) {
         android.app.Notification noti;
         Intent myIntent = new Intent(mContext, DownloadService.class);
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

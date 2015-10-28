@@ -55,9 +55,9 @@ public class DownloadService extends IntentService {
             urlConnection.setRequestProperty("Accept-Encoding", "gzip, deflate");
 
             urlConnection.connect();
-            long bytetotal = urlConnection.getContentLength();
-            long bytesum = 0;
-            int byteread = 0;
+            long byteTotal = urlConnection.getContentLength();
+            long byteSum = 0;
+            int byteRead = 0;
             in = urlConnection.getInputStream();
             File dir = StorageUtils.getCacheDirectory(this);
             String apkName = urlStr.substring(urlStr.lastIndexOf("/") + 1, urlStr.length());
@@ -67,11 +67,11 @@ public class DownloadService extends IntentService {
 
             int oldProgress = 0;
 
-            while ((byteread = in.read(buffer)) != -1) {
-                bytesum += byteread;
-                out.write(buffer, 0, byteread);
+            while ((byteRead = in.read(buffer)) != -1) {
+                byteSum += byteRead;
+                out.write(buffer, 0, byteRead);
 
-                int progress = (int) (bytesum * 100L / bytetotal);
+                int progress = (int) (byteSum * 100L / byteTotal);
                 // 如果进度与之前进度相等，则不更新，如果更新太频繁，否则会造成界面卡顿
                 if (progress != oldProgress) {
                     updateProgress(progress);

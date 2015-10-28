@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="newUpdateAvailable">Discovering new version</string>
+    <string name="dialogPositiveButton">Download</string>
+    <string name="dialogNegativeButton">Later</string>
+    <string name="app_no_new_update">No new version</string>
+    <string name="download_progress">downloading:%1$d%%</string>
+    <string name="download_success">download success, click install</string>
+</resources>
