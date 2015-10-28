@@ -1,6 +1,8 @@
 Android应用自动更新库(android-update-apk)
 ===================
 
+[English version document](https://github.com/artwl/android-update-apk/blob/master/README_EN.md "English version document")
+
 
 该library项目实现了软件版本检查，apk文件下载，软件安装（Android app update checker,download and install apk）支持API 8+
 
@@ -14,36 +16,38 @@ Android应用自动更新库(android-update-apk)
 
 	```
     	private static final String APP_UPDATE_SERVER_URL = "http://updatecheck";
-    	
+        private static final String APK_IS_AUTO_INSTALL = true;
+
     	...
-    	
+
     	updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateChecker.checkForDialog(getActivity(), APP_UPDATE_SERVER_URL);
+                UpdateChecker.checkForDialog(getActivity(), APP_UPDATE_SERVER_URL, APK_IS_AUTO_INSTALL);
             }
         });
-    	
+
     	...
-	
+
 	```
 
 - 使用Notification
 
 	```
     	private static final String APP_UPDATE_SERVER_URL = "http://updatecheck";
-    	
+        private static final String APK_IS_AUTO_INSTALL = false;
+
     	...
-    	
+
     	updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateChecker.checkForNotification(getActivity(), APP_UPDATE_SERVER_URL);
+                UpdateChecker.checkForNotification(getActivity(), APP_UPDATE_SERVER_URL, APK_IS_AUTO_INSTALL);
             }
         });
-    	
+
     	...
-	
+
 	```
 
 服务端返回的JSON数据示例格式为：
@@ -65,18 +69,13 @@ Android应用自动更新库(android-update-apk)
 #### 3.在AndroidManifest.xml中注册 DownloadService ####
 
 `<service android:name="XXX.DownloadService" android:exported="true" />`
-	
+
 注：这里的`android:name`值根据你的实际情况填写。
 
 #### 4.效果图 ####
-![screenshot](https://raw.github.com/feicien/android-auto-update/master/screenshots/sample.png)
-![screenshot](https://raw.github.com/feicien/android-auto-update/master/screenshots/sample_htc.png)
-![screenshot](https://raw.github.com/feicien/android-auto-update/master/screenshots/dialog.png)
-![screenshot](https://raw.github.com/feicien/android-auto-update/master/screenshots/dialog_htc.png)
-![screenshot](https://raw.github.com/feicien/android-auto-update/master/screenshots/notification.png)
-![screenshot](https://raw.github.com/feicien/android-auto-update/master/screenshots/notification_avd.png)
-![screenshot](https://raw.github.com/feicien/android-auto-update/master/screenshots/downloading.png)
-![screenshot](https://raw.github.com/feicien/android-auto-update/master/screenshots/downloading_avd.png)
+![screenshot](https://raw.github.com/artwl/android-update-apk/master/screenshots/sample.png)
+![screenshot](https://raw.github.com/artwl/android-update-apk/master/screenshots/dialog.png)
+![screenshot](https://raw.github.com/artwl/android-update-apk/master/screenshots/notification.png)
 
 
 #### 5.使用与参考的开源项目 ####
@@ -87,4 +86,4 @@ Android应用自动更新库(android-update-apk)
 
 2. [UpdateChecker](https://github.com/rampo/UpdateChecker "https://github.com/rampo/UpdateChecker") 该项目检查的是google play上的应用，如果有更新打开google Play,不提供下载apk的功能
 
- 
+
