@@ -64,7 +64,7 @@ Android应用自动更新库(android-auto-update)
 
 #### 3.在AndroidManifest.xml中注册 DownloadService ####
 
-	`<service android:name="XXX.DownloadService" android:exported="true" />`
+`<service android:name="XXX.DownloadService" android:exported="true" />`
 	
 注：这里的`android:name`值根据你的实际情况填写。
 
