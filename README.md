@@ -1,4 +1,4 @@
-Android应用自动更新库(android-auto-update)
+Android应用自动更新库(android-update-apk)
 ===================
 
 
