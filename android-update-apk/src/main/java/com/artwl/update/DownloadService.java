@@ -72,13 +72,13 @@ public class DownloadService extends IntentService {
                 out.write(buffer, 0, byteRead);
 
                 int progress = (int) (byteSum * 100L / byteTotal);
-                // 如果进度与之前进度相等，则不更新，如果更新太频繁，否则会造成界面卡顿
+
                 if (progress != oldProgress) {
                     updateProgress(progress);
                 }
                 oldProgress = progress;
             }
-            // 下载完成
+
             mBuilder.setContentText(getString(R.string.download_success)).setProgress(0, 0, false);
 
             Intent installAPKIntent = new Intent(Intent.ACTION_VIEW);
@@ -89,13 +89,10 @@ public class DownloadService extends IntentService {
                 mNotifyManager.cancel(0);
                 return;
             }
-            //如果没有设置SDCard写权限，或者没有sdcard,apk文件保存在内存中，需要授予权限才能安装
+
             String[] command = {"chmod", "777", apkFile.toString()};
             ProcessBuilder builder = new ProcessBuilder(command);
             builder.start();
-
-            //installAPKIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            //installAPKIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, installAPKIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -125,9 +122,7 @@ public class DownloadService extends IntentService {
     }
 
     private void updateProgress(int progress) {
-        //"正在下载:" + progress + "%"
         mBuilder.setContentText(this.getString(R.string.download_progress, progress)).setProgress(100, progress, false);
-        //setContentInent如果不设置在4.0+上没有问题，在4.0以下会报异常
         PendingIntent pendingintent = PendingIntent.getActivity(this, 0, new Intent(), PendingIntent.FLAG_CANCEL_CURRENT);
         mBuilder.setContentIntent(pendingintent);
         mNotifyManager.notify(0, mBuilder.build());

@@ -1,2 +1,2 @@
-include ':library'
+include ':android-update-apk'
 include ':sample'
