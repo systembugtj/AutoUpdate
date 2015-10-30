@@ -1,15 +1,33 @@
 Android应用自动更新库(android-update-apk)
 ===================
 
+[![Maven](https://img.shields.io/badge/maven-v0.0.1-brightgreen.svg)](https://bintray.com/artwl/maven/android-update-apk/0.0.1/view)
+[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+
 [English version document](https://github.com/artwl/android-update-apk/blob/master/README_EN.md "English version document")
 
 
 该library项目实现了软件版本检查，apk文件下载，软件安装（Android app update checker,download and install apk）支持API 8+
 
 
-#### 1.导入library项目 ####
+#### 1.导入包 ####
 
-提供2种版本检查方式, 在你的项目中添加以下代码即可
+有两种方式：
+
+- 方式一：Gradle
+
+```
+dependencies {
+    //jCenter
+    compile 'com.artwl:android-update-apk:0.0.1'
+}
+```
+
+- 方式二：下载并导入 android-update-apk 库
+
+#### 2.调用 ####
+
+提供2种调用方式, 在你的项目中添加以下代码即可
 
 - 使用Dialog
 
@@ -54,7 +72,7 @@ Android应用自动更新库(android-update-apk)
 
 `{"url":"http://192.168.205.33:8080/Hello/medtime_v3.0.1_Other_20150116.apk","versionCode":2,"updateMessage":"版本更新信息"}`
 
-#### 2.添加权限 ####
+#### 3.添加权限 ####
 
 - 添加访问网络的权限
 
@@ -66,19 +84,19 @@ Android应用自动更新库(android-update-apk)
 
 	`<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`
 
-#### 3.在AndroidManifest.xml中注册 DownloadService ####
+#### 4.在AndroidManifest.xml中注册 DownloadService ####
 
 `<service android:name="XXX.DownloadService" android:exported="true" />`
 
 注：这里的`android:name`值根据你的实际情况填写。
 
-#### 4.效果图 ####
+#### 5.示例效果图 ####
 ![screenshot](https://raw.github.com/artwl/android-update-apk/master/screenshots/sample.png)
 ![screenshot](https://raw.github.com/artwl/android-update-apk/master/screenshots/dialog.png)
 ![screenshot](https://raw.github.com/artwl/android-update-apk/master/screenshots/notification.png)
 
 
-#### 5.使用与参考的开源项目 ####
+#### 6.使用与参考的开源项目 ####
 
 1. [android-styled-dialogs](https://github.com/inmite/android-styled-dialogs "https://github.com/inmite/android-styled-dialogs") 使用该项目，可以在api 8+上显示 holo 风格的对话框，其它选择
 ，当然你也可以使用其它的开源项目比如：[ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock "https://github.com/JakeWharton/ActionBarSherlock") 和 [HoloEverywhere](https://github.com/Prototik/HoloEverywhere "https://github.com/Prototik/HoloEverywhere")
