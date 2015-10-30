@@ -28,7 +28,7 @@ You can use this library in two ways , example code:
 
     ```
         private static final String APP_UPDATE_SERVER_URL = "http://updatecheck";
-        private static final String APK_IS_AUTO_INSTALL = true;
+        private static final boolean APK_IS_AUTO_INSTALL = true;
 
         ...
 
@@ -47,7 +47,7 @@ You can use this library in two ways , example code:
 
     ```
         private static final String APP_UPDATE_SERVER_URL = "http://updatecheck";
-        private static final String APK_IS_AUTO_INSTALL = false;
+        private static final boolean APK_IS_AUTO_INSTALL = false;
 
         ...
 
