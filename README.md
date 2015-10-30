@@ -86,9 +86,7 @@ dependencies {
 
 #### 4.在AndroidManifest.xml中注册 DownloadService ####
 
-`<service android:name="XXX.DownloadService" android:exported="true" />`
-
-注：这里的`android:name`值根据你的实际情况填写。
+`<service android:name="com.artwl.update.DownloadService" android:exported="true" />`
 
 #### 5.示例效果图 ####
 ![screenshot](https://raw.github.com/artwl/android-update-apk/master/screenshots/sample.png)
