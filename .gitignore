@@ -9,3 +9,4 @@ android-auto-update.iml
 local.properties
 /.gradle
 /android-update-apk.iml
+autoupdate.iml

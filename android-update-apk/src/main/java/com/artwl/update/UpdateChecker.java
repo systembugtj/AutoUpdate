@@ -27,6 +27,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.common.base.Strings;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class UpdateChecker extends Fragment {
 
     private static final String NOTICE_TYPE_KEY = "type";
@@ -35,11 +41,19 @@ public class UpdateChecker extends Fragment {
     private static final int NOTICE_NOTIFICATION = 2;
     private static final int NOTICE_DIALOG = 1;
     private static final String TAG = "UpdateChecker";
+    private static final String HTTP_VERB = "httpverb";
 
     private FragmentActivity mContext;
     private Thread mThread;
     private int mTypeOfNotice;
     private boolean mIsAutoInstall;
+    private String mHttpVerb;
+
+    public static void checkForDialog(FragmentActivity fragmentActivity,
+                                      String checkUpdateServerUrl,
+                                      boolean isAutoInstall) {
+        checkForDialog(fragmentActivity, checkUpdateServerUrl, isAutoInstall, "GET");
+    }
 
     /**
      * Show a Dialog if an update is available for download. Callable in a
@@ -50,15 +64,8 @@ public class UpdateChecker extends Fragment {
      */
     public static void checkForDialog(FragmentActivity fragmentActivity,
                                       String checkUpdateServerUrl,
-                                      boolean isAutoInstall) {
-        FragmentTransaction content = fragmentActivity.getSupportFragmentManager().beginTransaction();
-        UpdateChecker updateChecker = new UpdateChecker();
-        Bundle args = new Bundle();
-        args.putInt(NOTICE_TYPE_KEY, NOTICE_DIALOG);
-        args.putString(APP_UPDATE_SERVER_URL, checkUpdateServerUrl);
-        args.putBoolean(APK_IS_AUTO_INSTALL, isAutoInstall);
-        updateChecker.setArguments(args);
-        content.add(updateChecker, null).commit();
+                                      boolean isAutoInstall, String httpVerb) {
+        checkForAutoUpdate(fragmentActivity, checkUpdateServerUrl, isAutoInstall, httpVerb, NOTICE_DIALOG);
     }
 
 
@@ -72,12 +79,34 @@ public class UpdateChecker extends Fragment {
     public static void checkForNotification(FragmentActivity fragmentActivity,
                                             String checkUpdateServerUrl,
                                             boolean isAutoInstall) {
+        checkForNotification(fragmentActivity, checkUpdateServerUrl, isAutoInstall, "GET");
+    }
+
+    /**
+     * Show a Notification if an update is available for download. Callable in a
+     * FragmentActivity Specify the number of checks after the notification will
+     * be shown.
+     *
+     * @param fragmentActivity Required.
+     */
+    public static void checkForNotification(FragmentActivity fragmentActivity,
+                                            String checkUpdateServerUrl,
+                                            boolean isAutoInstall, String httpVerb) {
+        checkForAutoUpdate(fragmentActivity, checkUpdateServerUrl, isAutoInstall, httpVerb, NOTICE_NOTIFICATION);
+    }
+
+    public static void checkForAutoUpdate(FragmentActivity fragmentActivity,
+                                          String checkUpdateServerUrl,
+                                          boolean isAutoInstall,
+                                          String httpVerb,
+                                          int typeOfNotice) {
         FragmentTransaction content = fragmentActivity.getSupportFragmentManager().beginTransaction();
         UpdateChecker updateChecker = new UpdateChecker();
         Bundle args = new Bundle();
-        args.putInt(NOTICE_TYPE_KEY, NOTICE_NOTIFICATION);
+        args.putInt(NOTICE_TYPE_KEY, typeOfNotice);
         args.putString(APP_UPDATE_SERVER_URL, checkUpdateServerUrl);
         args.putBoolean(APK_IS_AUTO_INSTALL, isAutoInstall);
+        args.putString(HTTP_VERB, httpVerb);
         updateChecker.setArguments(args);
         content.add(updateChecker, null).commit();
     }
@@ -93,7 +122,12 @@ public class UpdateChecker extends Fragment {
         Bundle args = getArguments();
         mTypeOfNotice = args.getInt(NOTICE_TYPE_KEY);
         mIsAutoInstall = args.getBoolean(APK_IS_AUTO_INSTALL);
+        mHttpVerb = args.getString(HTTP_VERB);
         String url = args.getString(APP_UPDATE_SERVER_URL);
+
+        if (Strings.isNullOrEmpty(mHttpVerb)) {
+            mHttpVerb = "POST";
+        }
         checkForUpdates(url);
     }
 
@@ -120,7 +154,22 @@ public class UpdateChecker extends Fragment {
         mThread.start();
     }
 
-    private String sendPost(String urlStr) {
+    private String sendPost(String url) {
+
+        try {
+            OkHttpClient client = new OkHttpClient();
+
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        } catch (IOException ex) {
+            return "";
+        }
+        /*
         HttpURLConnection uRLConnection = null;
         InputStream is = null;
         BufferedReader buffer = null;
@@ -130,7 +179,7 @@ public class UpdateChecker extends Fragment {
             uRLConnection = (HttpURLConnection) url.openConnection();
             uRLConnection.setDoInput(true);
             uRLConnection.setDoOutput(true);
-            uRLConnection.setRequestMethod("POST");
+            uRLConnection.setRequestMethod(mHttpVerb);
             uRLConnection.setUseCaches(false);
             uRLConnection.setConnectTimeout(10 * 1000);
             uRLConnection.setReadTimeout(10 * 1000);
@@ -180,6 +229,7 @@ public class UpdateChecker extends Fragment {
             }
         }
         return result;
+        */
     }
 
 
