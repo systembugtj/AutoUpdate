@@ -46,6 +46,7 @@ public class DownloadService extends IntentService {
             URL url = new URL(urlStr);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
+            urlConnection.setUseCaches(false);
             urlConnection.setRequestMethod("GET");
             urlConnection.setDoOutput(false);
             urlConnection.setConnectTimeout(10 * 1000);

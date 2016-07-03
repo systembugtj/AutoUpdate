@@ -258,6 +258,8 @@ public class UpdateChecker extends Fragment {
             int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
 
             if (apkCode > versionCode) {
+                updateMessage += String.format(" [%d --> %d]", versionCode, apkCode);
+
                 if (mTypeOfNotice == NOTICE_NOTIFICATION) {
                     showNotification(updateMessage, apkUrl, mIsAutoInstall);
                 } else if (mTypeOfNotice == NOTICE_DIALOG) {
