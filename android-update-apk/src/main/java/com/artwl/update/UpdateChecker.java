@@ -285,7 +285,12 @@ public class UpdateChecker extends Fragment {
         args.putString(Constants.APK_DOWNLOAD_URL, apkUrl);
         args.putBoolean(Constants.APK_IS_AUTO_INSTALL, isAutoInstall);
         d.setArguments(args);
-        d.show(mContext.getSupportFragmentManager(), null);
+
+        // http://blog.csdn.net/chenshufei2/article/details/48747149
+        // Don't use default d.show(mContext.getSupportFragmentManager(), null);
+        FragmentTransaction ft = mContext.getSupportFragmentManager().beginTransaction();
+        ft.add(d, this.getClass().getSimpleName());
+        ft.commitAllowingStateLoss();//注意这里使用commitAllowingStateLoss()
     }
 
     /**
