@@ -2,6 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'maven-publish'
 
+def repo_context_url = hasProperty('artifactory_context_url') ? artifactory_context_url : System.getenv('artifactory_context_url')
+def repo_username = hasProperty('artifactory_username') ? artifactory_username : System.getenv('artifactory_username')
+def repo_password = hasProperty('artifactory_password') ? artifactory_password : System.getenv('artifactory_password')
+def repo_key = hasProperty('artifactory_key') ? artifactory_key : System.getenv('artifactory_key')
+
 ext {
     bintrayRepo = 'maven'
     bintrayName = 'android-update-apk'
@@ -69,13 +74,13 @@ publishing {
 }
 
 artifactory {
-    contextUrl = artifactory_context_url
+    contextUrl = repo_context_url
     publish {
         repository {
-            repoKey = 'libs-release-local'
+            repoKey = repo_key
 
-            username = artifactory_username
-            password = artifactory_password
+            username = repo_username
+            password = repo_password
         }
         defaults {
             publications('aar')
