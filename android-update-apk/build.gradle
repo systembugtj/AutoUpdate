@@ -6,6 +6,7 @@ def repo_context_url = hasProperty('artifactory_context_url') ? artifactory_cont
 def repo_username = hasProperty('artifactory_username') ? artifactory_username : System.getenv('artifactory_username')
 def repo_password = hasProperty('artifactory_password') ? artifactory_password : System.getenv('artifactory_password')
 def repo_key = hasProperty('artifactory_key') ? artifactory_key : System.getenv('artifactory_key')
+def VERSION_NAME = System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : "1.1.0-SNAPSHOT"
 
 ext {
     bintrayRepo = 'maven'
@@ -48,7 +49,7 @@ android {
         minSdkVersion 8
         targetSdkVersion 23
         versionCode 1
-        versionName '0.0.1'
+        versionName VERSION_NAME
     }
     buildTypes {
         release {
@@ -62,7 +63,7 @@ android {
 
 def libraryGroupId = 'com.conouch.view'
 def libraryArtifactId = 'auto-update'
-def libraryVersion = '1.0.0'
+def libraryVersion = VERSION_NAME
 
 publishing {
     publications {
