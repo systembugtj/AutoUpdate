@@ -55,6 +55,9 @@ android {
             minifyEnabled false
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 def libraryGroupId = 'com.conouch.view'
