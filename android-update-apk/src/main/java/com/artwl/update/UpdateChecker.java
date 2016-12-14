@@ -27,7 +27,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.artwl.update.entity.UpdateDescription;
 import com.google.common.base.Strings;
+import com.google.gson.Gson;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -159,7 +161,6 @@ public class UpdateChecker extends Fragment {
         try {
             OkHttpClient client = new OkHttpClient();
 
-
             Request request = new Request.Builder()
                     .url(url)
                     .build();
@@ -169,109 +170,29 @@ public class UpdateChecker extends Fragment {
         } catch (IOException ex) {
             return "";
         }
-        /*
-        HttpURLConnection uRLConnection = null;
-        InputStream is = null;
-        BufferedReader buffer = null;
-        String result = null;
-        try {
-            URL url = new URL(urlStr);
-            uRLConnection = (HttpURLConnection) url.openConnection();
-            uRLConnection.setDoInput(true);
-            uRLConnection.setDoOutput(true);
-            uRLConnection.setRequestMethod(mHttpVerb);
-            uRLConnection.setUseCaches(false);
-            uRLConnection.setConnectTimeout(10 * 1000);
-            uRLConnection.setReadTimeout(10 * 1000);
-            uRLConnection.setInstanceFollowRedirects(false);
-            uRLConnection.setRequestProperty("Connection", "Keep-Alive");
-            uRLConnection.setRequestProperty("Charset", "UTF-8");
-            uRLConnection.setRequestProperty("Accept-Encoding", "gzip, deflate");
-            uRLConnection.setRequestProperty("Content-Type", "application/json");
-
-            uRLConnection.connect();
-
-
-            is = uRLConnection.getInputStream();
-
-            String content_encode = uRLConnection.getContentEncoding();
-
-            if (null != content_encode && !"".equals(content_encode) && content_encode.equals("gzip")) {
-                is = new GZIPInputStream(is);
-            }
-
-            buffer = new BufferedReader(new InputStreamReader(is));
-            StringBuilder strBuilder = new StringBuilder();
-            String line;
-            while ((line = buffer.readLine()) != null) {
-                strBuilder.append(line);
-            }
-            result = strBuilder.toString();
-        } catch (Exception e) {
-            Log.e(TAG, "http post error", e);
-        } finally {
-            if (buffer != null) {
-                try {
-                    buffer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (uRLConnection != null) {
-                uRLConnection.disconnect();
-            }
-        }
-        return result;
-        */
     }
 
 
     private void parseJson(String json) {
         mThread.interrupt();
         Looper.prepare();
+        UpdateDescription description = new Gson().fromJson(json, UpdateDescription.class);
         try {
-
-            JSONObject obj = new JSONObject(json);
-            if (!obj.has(Constants.APK_DOWNLOAD_URL)) {
-                Log.e(TAG, "Server response data format error: no " + Constants.APK_DOWNLOAD_URL + " field");
-                return;
-            }
-            if (!obj.has(Constants.APK_UPDATE_CONTENT)) {
-                Log.e(TAG, "Server response data format error: no " + Constants.APK_UPDATE_CONTENT + " field");
-                return;
-            }
-            if (!obj.has(Constants.APK_VERSION_CODE)) {
-                Log.e(TAG, "Server response data format error: no " + Constants.APK_VERSION_CODE + " field");
-                return;
-            }
-            String updateMessage = obj.getString(Constants.APK_UPDATE_CONTENT);
-            String apkUrl = obj.getString(Constants.APK_DOWNLOAD_URL);
-            int apkCode = obj.getInt(Constants.APK_VERSION_CODE);
-
             int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
 
-            if (apkCode > versionCode) {
-                updateMessage += String.format(" [%d --> %d]", versionCode, apkCode);
+            if (description.versionCode > versionCode) {
+                description.updateMessage += String.format(" [%d --> %d]", versionCode, description.versionCode);
 
                 if (mTypeOfNotice == NOTICE_NOTIFICATION) {
-                    showNotification(updateMessage, apkUrl, mIsAutoInstall);
+                    showNotification(description.updateMessage, description.url, mIsAutoInstall);
                 } else if (mTypeOfNotice == NOTICE_DIALOG) {
-                    showDialog(updateMessage, apkUrl, mIsAutoInstall);
+                    showDialog(description.updateMessage, description.url, mIsAutoInstall);
                 }
             } else {
                 Log.i(TAG, mContext.getString(R.string.app_no_new_update));
             }
-
         } catch (PackageManager.NameNotFoundException ignored) {
-        } catch (JSONException e) {
-            Log.e(TAG, "parse json error", e);
+            Log.e(TAG, "parse json error", ignored);
         }
     }
 
