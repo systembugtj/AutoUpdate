@@ -6,7 +6,7 @@ def repo_context_url = hasProperty('artifactory_context_url') ? artifactory_cont
 def repo_username = hasProperty('artifactory_username') ? artifactory_username : System.getenv('artifactory_username')
 def repo_password = hasProperty('artifactory_password') ? artifactory_password : System.getenv('artifactory_password')
 def repo_key = hasProperty('artifactory_key') ? artifactory_key : System.getenv('artifactory_key')
-def VERSION_NAME = System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : "1.1.0-SNAPSHOT"
+def VERSION_NAME = System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : "1.4.0"
 
 ext {
     bintrayRepo = 'maven'
@@ -36,8 +36,10 @@ dependencies {
     compile 'com.android.support:support-v4:23.1.0'
 
     // Guava
-    compile 'com.google.guava:guava:19.0+'
-    compile 'com.google.code.gson:gson:2.8.0'
+    provided 'com.google.guava:guava:20.0+'
+    provided 'com.google.code.gson:gson:2.8.0'
+    provided 'com.squareup.okhttp3:okhttp:3.4.1'
+    provided 'com.squareup.okio:okio:1.11.0'
 
     // OkHttp
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
