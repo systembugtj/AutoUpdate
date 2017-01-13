@@ -10,7 +10,7 @@ import com.artwl.update.UpdateChecker;
 
 public class MainActivity extends ActionBarActivity {
 
-    protected static final String APP_UPDATE_SERVER_URL = "http://APP_UPDATE_SERVER_URL";
+    protected static final String APP_UPDATE_SERVER_URL = "http://cdn.kandaping.com/kdp/update.json";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
