@@ -35,6 +35,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.artwl.update.Constants.APK_CHECK_EXTERNAL;
+
 public class UpdateChecker extends Fragment {
 
     private static final String NOTICE_TYPE_KEY = "type";
@@ -49,12 +51,13 @@ public class UpdateChecker extends Fragment {
     private Thread mThread;
     private int mTypeOfNotice;
     private boolean mIsAutoInstall;
+    private boolean mCheckExternal;
     private String mHttpVerb;
 
     public static void checkForDialog(FragmentActivity fragmentActivity,
                                       String checkUpdateServerUrl,
-                                      boolean isAutoInstall) {
-        checkForDialog(fragmentActivity, checkUpdateServerUrl, isAutoInstall, "GET");
+                                      boolean isAutoInstall, boolean checkExternal) {
+        checkForDialog(fragmentActivity, checkUpdateServerUrl, isAutoInstall, checkExternal, "GET");
     }
 
     /**
@@ -66,8 +69,8 @@ public class UpdateChecker extends Fragment {
      */
     public static void checkForDialog(FragmentActivity fragmentActivity,
                                       String checkUpdateServerUrl,
-                                      boolean isAutoInstall, String httpVerb) {
-        checkForAutoUpdate(fragmentActivity, checkUpdateServerUrl, isAutoInstall, httpVerb, NOTICE_DIALOG);
+                                      boolean isAutoInstall, boolean checkExternal, String httpVerb) {
+        checkForAutoUpdate(fragmentActivity, checkUpdateServerUrl, isAutoInstall, checkExternal, httpVerb, NOTICE_DIALOG);
     }
 
 
@@ -80,8 +83,9 @@ public class UpdateChecker extends Fragment {
      */
     public static void checkForNotification(FragmentActivity fragmentActivity,
                                             String checkUpdateServerUrl,
-                                            boolean isAutoInstall) {
-        checkForNotification(fragmentActivity, checkUpdateServerUrl, isAutoInstall, "GET");
+                                            boolean isAutoInstall,
+                                            boolean checkExternal) {
+        checkForNotification(fragmentActivity, checkUpdateServerUrl, isAutoInstall, checkExternal, "GET");
     }
 
     /**
@@ -93,13 +97,16 @@ public class UpdateChecker extends Fragment {
      */
     public static void checkForNotification(FragmentActivity fragmentActivity,
                                             String checkUpdateServerUrl,
-                                            boolean isAutoInstall, String httpVerb) {
-        checkForAutoUpdate(fragmentActivity, checkUpdateServerUrl, isAutoInstall, httpVerb, NOTICE_NOTIFICATION);
+                                            boolean isAutoInstall,
+                                            boolean checkExternal,
+                                            String httpVerb) {
+        checkForAutoUpdate(fragmentActivity, checkUpdateServerUrl, isAutoInstall, checkExternal, httpVerb, NOTICE_NOTIFICATION);
     }
 
     public static void checkForAutoUpdate(FragmentActivity fragmentActivity,
                                           String checkUpdateServerUrl,
                                           boolean isAutoInstall,
+                                          boolean checkExternal,
                                           String httpVerb,
                                           int typeOfNotice) {
         FragmentTransaction content = fragmentActivity.getSupportFragmentManager().beginTransaction();
@@ -108,7 +115,9 @@ public class UpdateChecker extends Fragment {
         args.putInt(NOTICE_TYPE_KEY, typeOfNotice);
         args.putString(APP_UPDATE_SERVER_URL, checkUpdateServerUrl);
         args.putBoolean(APK_IS_AUTO_INSTALL, isAutoInstall);
+        args.putBoolean(APK_CHECK_EXTERNAL, checkExternal);
         args.putString(HTTP_VERB, httpVerb);
+
         updateChecker.setArguments(args);
         content.add(updateChecker, null).commit();
     }
@@ -124,6 +133,7 @@ public class UpdateChecker extends Fragment {
         Bundle args = getArguments();
         mTypeOfNotice = args.getInt(NOTICE_TYPE_KEY);
         mIsAutoInstall = args.getBoolean(APK_IS_AUTO_INSTALL);
+        mCheckExternal = args.getBoolean(APK_CHECK_EXTERNAL);
         mHttpVerb = args.getString(HTTP_VERB);
         String url = args.getString(APP_UPDATE_SERVER_URL);
 
@@ -184,9 +194,9 @@ public class UpdateChecker extends Fragment {
                 description.updateMessage += String.format(" [%d --> %d]", versionCode, description.versionCode);
 
                 if (mTypeOfNotice == NOTICE_NOTIFICATION) {
-                    showNotification(description.updateMessage, description.url, mIsAutoInstall);
+                    showNotification(description.updateMessage, description.url, mIsAutoInstall, mCheckExternal);
                 } else if (mTypeOfNotice == NOTICE_DIALOG) {
-                    showDialog(description.updateMessage, description.url, mIsAutoInstall);
+                    showDialog(description.updateMessage, description.url, mIsAutoInstall, mCheckExternal);
                 }
             } else {
                 Log.i(TAG, mContext.getString(R.string.app_no_new_update));
@@ -199,12 +209,13 @@ public class UpdateChecker extends Fragment {
     /**
      * Show dialog
      */
-    private void showDialog(String content, String apkUrl, boolean isAutoInstall) {
+    private void showDialog(String content, String apkUrl, boolean isAutoInstall, boolean checkExternal) {
         UpdateDialog d = new UpdateDialog();
         Bundle args = new Bundle();
         args.putString(Constants.APK_UPDATE_CONTENT, content);
         args.putString(Constants.APK_DOWNLOAD_URL, apkUrl);
         args.putBoolean(Constants.APK_IS_AUTO_INSTALL, isAutoInstall);
+        args.putBoolean(Constants.APK_CHECK_EXTERNAL, checkExternal);
         d.setArguments(args);
 
         // http://blog.csdn.net/chenshufei2/article/details/48747149
@@ -217,12 +228,13 @@ public class UpdateChecker extends Fragment {
     /**
      * Show Notification
      */
-    private void showNotification(String content, String apkUrl, boolean isAutoInstall) {
+    private void showNotification(String content, String apkUrl, boolean isAutoInstall, boolean checkExternal) {
         android.app.Notification noti;
         Intent myIntent = new Intent(mContext, DownloadService.class);
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         myIntent.putExtra(Constants.APK_DOWNLOAD_URL, apkUrl);
         myIntent.putExtra(Constants.APK_IS_AUTO_INSTALL, isAutoInstall);
+        myIntent.putExtra(Constants.APK_CHECK_EXTERNAL, checkExternal);
         PendingIntent pendingIntent = PendingIntent.getService(mContext, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         int smallIcon = mContext.getApplicationInfo().icon;

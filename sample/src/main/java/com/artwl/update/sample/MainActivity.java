@@ -20,28 +20,28 @@ public class MainActivity extends ActionBarActivity {
 		findViewById(R.id.btnDialog).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				UpdateChecker.checkForDialog(MainActivity.this, APP_UPDATE_SERVER_URL, false);
+				UpdateChecker.checkForDialog(MainActivity.this, APP_UPDATE_SERVER_URL, false, true);
 			}
 		});
 
 		findViewById(R.id.btnDialogAutoInstall).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				UpdateChecker.checkForDialog(MainActivity.this, APP_UPDATE_SERVER_URL, true);
+				UpdateChecker.checkForDialog(MainActivity.this, APP_UPDATE_SERVER_URL, true, false);
 			}
 		});
 
 		findViewById(R.id.btnNotify).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				UpdateChecker.checkForNotification(MainActivity.this,APP_UPDATE_SERVER_URL, false);
+				UpdateChecker.checkForNotification(MainActivity.this,APP_UPDATE_SERVER_URL, false, false);
 			}
 		});
 
 		findViewById(R.id.btnNotifyAutoInstall).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				UpdateChecker.checkForNotification(MainActivity.this,APP_UPDATE_SERVER_URL, true);
+				UpdateChecker.checkForNotification(MainActivity.this,APP_UPDATE_SERVER_URL, true, true);
 			}
 		});
 

@@ -48,9 +48,9 @@ public final class StorageUtils {
 	 * @param context Application context
 	 * @return Cache {@link File directory}
 	 */
-	public static File getCacheDirectory(Context context) {
+	public static File getCacheDirectory(Context context, boolean checkExternal) {
 		File appCacheDir = null;
-		if (MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) && hasExternalStoragePermission(context)) {
+		if (checkExternal && MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) && hasExternalStoragePermission(context)) {
 			appCacheDir = getExternalCacheDir(context);
 		}
 		if (appCacheDir == null) {

@@ -31,7 +31,7 @@ import okhttp3.internal.Util;
 
 public class DownloadService extends IntentService {
     private static final int BUFFER_SIZE = 10 * 1024; // 8k ~ 32K
-    private static final String TAG = "DownloadService";
+    private static final String TAG = "AutoUpdate";
     private NotificationManager mNotifyManager;
     private Builder mBuilder;
 
@@ -51,12 +51,13 @@ public class DownloadService extends IntentService {
         mBuilder.setContentTitle(appName).setSmallIcon(icon);
         String urlStr = intent.getStringExtra(Constants.APK_DOWNLOAD_URL);
         boolean isAutoInstall = intent.getBooleanExtra(Constants.APK_IS_AUTO_INSTALL, false);
+        boolean checkExternal = intent.getBooleanExtra(Constants.APK_CHECK_EXTERNAL, true);
 
         BufferedSink sink = null;
         BufferedSource source = null;
         try {
             // apk local file path.
-            File dir = StorageUtils.getCacheDirectory(this);
+            File dir = StorageUtils.getCacheDirectory(this, checkExternal);
             String apkName = urlStr.substring(urlStr.lastIndexOf("/") + 1, urlStr.length());
             File apkFile = new File(dir, apkName);
 
@@ -85,6 +86,10 @@ public class DownloadService extends IntentService {
                 updateProgress(progress);
             }
             sink.flush();
+
+            apkFile.setReadable(true, false);
+
+            Log.d(TAG, String.format("Download Apk to %s", apkFile));
 
             mBuilder.setContentText(getString(R.string.download_success)).setProgress(0, 0, false);
 

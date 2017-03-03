@@ -6,7 +6,7 @@ def repo_context_url = hasProperty('artifactory_context_url') ? artifactory_cont
 def repo_username = hasProperty('artifactory_username') ? artifactory_username : System.getenv('artifactory_username')
 def repo_password = hasProperty('artifactory_password') ? artifactory_password : System.getenv('artifactory_password')
 def repo_key = hasProperty('artifactory_key') ? artifactory_key : System.getenv('artifactory_key')
-def VERSION_NAME = System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : "1.4.0"
+def VERSION_NAME = System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : "1.6.3"
 
 ext {
     bintrayRepo = 'maven'
@@ -46,11 +46,11 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.3'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 23
         versionCode 1
         versionName VERSION_NAME
