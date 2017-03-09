@@ -7,8 +7,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import java.io.File;
@@ -56,7 +58,7 @@ public class DownloadService extends IntentService {
         BufferedSink sink = null;
         BufferedSource source = null;
         try {
-            // apk local file path.
+            // apk local file paths.
             File dir = StorageUtils.getCacheDirectory(this, checkExternal);
             String apkName = urlStr.substring(urlStr.lastIndexOf("/") + 1, urlStr.length());
             File apkFile = new File(dir, apkName);
@@ -93,10 +95,16 @@ public class DownloadService extends IntentService {
 
             mBuilder.setContentText(getString(R.string.download_success)).setProgress(0, 0, false);
 
+            Uri fileUri = StorageUtils.getFileUri(this, apkFile);
+
             Intent installAPKIntent = new Intent(Intent.ACTION_VIEW);
-            installAPKIntent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+            installAPKIntent.setDataAndType(fileUri, "application/vnd.android.package-archive");
             if (isAutoInstall) {
                 installAPKIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (Build.VERSION.SDK_INT >= 24) {
+                    intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+                    installAPKIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
                 startActivity(installAPKIntent);
                 mNotifyManager.cancel(0);
                 return;

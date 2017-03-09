@@ -6,7 +6,7 @@ def repo_context_url = hasProperty('artifactory_context_url') ? artifactory_cont
 def repo_username = hasProperty('artifactory_username') ? artifactory_username : System.getenv('artifactory_username')
 def repo_password = hasProperty('artifactory_password') ? artifactory_password : System.getenv('artifactory_password')
 def repo_key = hasProperty('artifactory_key') ? artifactory_key : System.getenv('artifactory_key')
-def VERSION_NAME = System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : "1.6.3"
+def VERSION_NAME = System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : "1.6.5"
 
 ext {
     bintrayRepo = 'maven'

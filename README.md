@@ -1,14 +1,13 @@
-Android应用自动更新库(android-update-apk)
+Android应用自动更新库 (android-update-apk)
 ===================
 
-[![Maven](https://img.shields.io/badge/maven-v0.0.1-brightgreen.svg)](https://bintray.com/artwl/maven/android-update-apk/0.0.1/view)
-[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+Forked from 
 
-[English version document](https://github.com/artwl/android-update-apk/blob/master/README_EN.md "English version document")
+v1.6.5
 
+Fix SDK >= 24 file:// not allowed
 
 该library项目实现了软件版本检查，apk文件下载，软件安装（Android app update checker,download and install apk）支持API 8+
-
 
 #### 1.导入包 ####
 
@@ -101,5 +100,4 @@ dependencies {
 
 
 2. [UpdateChecker](https://github.com/rampo/UpdateChecker "https://github.com/rampo/UpdateChecker") 该项目检查的是google play上的应用，如果有更新打开google Play,不提供下载apk的功能
-
 

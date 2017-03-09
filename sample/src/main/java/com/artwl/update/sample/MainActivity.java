@@ -10,7 +10,7 @@ import com.artwl.update.UpdateChecker;
 
 public class MainActivity extends ActionBarActivity {
 
-    protected static final String APP_UPDATE_SERVER_URL = "http://cdn.kandaping.com/kdp/update.json";
+    protected static final String APP_UPDATE_SERVER_URL = "http://cdn.kandaping.com/hjb/update.json";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class MainActivity extends ActionBarActivity {
 		findViewById(R.id.btnDialogAutoInstall).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				UpdateChecker.checkForDialog(MainActivity.this, APP_UPDATE_SERVER_URL, true, false);
+				UpdateChecker.checkForDialog(MainActivity.this, APP_UPDATE_SERVER_URL, true, true);
 			}
 		});
 

@@ -22,7 +22,10 @@ import java.io.IOException;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 /**
@@ -62,7 +65,13 @@ public final class StorageUtils {
 		return appCacheDir;
 	}
 
-	
+	public static Uri getFileUri (Context context, File apkFile) {
+		if (Build.VERSION.SDK_INT >= 24) {
+			return FileProvider.getUriForFile(context, context.getPackageName(), apkFile);
+		} else {
+			return Uri.fromFile(apkFile);
+		}
+	}
 
 	private static File getExternalCacheDir(Context context) {
 		File dataDir = new File(new File(Environment.getExternalStorageDirectory(), "Android"), "data");
