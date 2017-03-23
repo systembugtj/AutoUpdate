@@ -3,6 +3,9 @@ Android应用自动更新库 (android-update-apk)
 
 [![](https://jitpack.io/v/systembugtj/autoupdate.svg)](https://jitpack.io/#systembugtj/autoupdate)
 
+v1.6.7
+
+Fix parse exception when network is down.
 
 v1.6.5
 
