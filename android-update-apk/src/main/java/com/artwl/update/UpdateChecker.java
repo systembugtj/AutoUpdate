@@ -187,6 +187,10 @@ public class UpdateChecker extends Fragment {
         mThread.interrupt();
         Looper.prepare();
         UpdateDescription description = new Gson().fromJson(json, UpdateDescription.class);
+
+        if (description == null) {
+            description = new UpdateDescription();
+        }
         try {
             int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
 

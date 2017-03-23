@@ -5,8 +5,8 @@ package com.artwl.update.entity;
  */
 
 public class UpdateDescription {
-    public String url;
-    public String updateMessage;
-    public int versionCode;
+    public String url = "";
+    public String updateMessage = "";
+    public int versionCode = 0;
     public String isAutoInstall;
 }

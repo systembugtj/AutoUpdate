@@ -1,7 +1,7 @@
 Android应用自动更新库 (android-update-apk)
 ===================
 
-Forked from 
+Forked from
 
 v1.6.5
 
