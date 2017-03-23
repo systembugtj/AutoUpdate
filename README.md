@@ -1,7 +1,8 @@
 Android应用自动更新库 (android-update-apk)
 ===================
 
-Forked from
+[![](https://jitpack.io/v/systembugtj/autoupdate.svg)](https://jitpack.io/#systembugtj/autoupdate)
+
 
 v1.6.5
 
