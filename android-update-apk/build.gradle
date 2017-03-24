@@ -2,13 +2,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group='com.github.systembugtj'
-version="1.6.7"
+version="1.6.8"
 
 dependencies {
     compile 'com.android.support:support-v4:23.1.0'
 
     // Guava
-    provided 'com.google.guava:guava:20.0+'
+    provided 'com.google.guava:guava:20.0'
     provided 'com.google.code.gson:gson:2.8.0'
     provided 'com.squareup.okhttp3:okhttp:3.4.1'
     provided 'com.squareup.okio:okio:1.11.0'

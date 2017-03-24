@@ -127,9 +127,9 @@ public class UpdateChecker extends Fragment {
      * This class is a Fragment. Check for the method you have chosen.
      */
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mContext = (FragmentActivity) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = this.getActivity();
         Bundle args = getArguments();
         mTypeOfNotice = args.getInt(NOTICE_TYPE_KEY);
         mIsAutoInstall = args.getBoolean(APK_IS_AUTO_INSTALL);
