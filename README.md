@@ -18,7 +18,7 @@ Fix SDK >= 24 file:// not allowed
 有两种方式：
 
 ```gradle
- allprojects {
+   allprojects {
         repositories {
             jcenter()
             maven { url "https://jitpack.io" }
