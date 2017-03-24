@@ -17,6 +17,7 @@ Fix SDK >= 24 file:// not allowed
 
 有两种方式：
 
+```gradle
  allprojects {
         repositories {
             jcenter()
@@ -26,6 +27,7 @@ Fix SDK >= 24 file:// not allowed
    dependencies {
         compile 'com.github.systembugtj:autoupdate:[version]'
    }
+```
 
 #### 2.调用 ####
 
