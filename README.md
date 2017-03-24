@@ -17,16 +17,15 @@ Fix SDK >= 24 file:// not allowed
 
 有两种方式：
 
-- 方式一：Gradle
-
-```
-dependencies {
-    //jCenter
-    compile 'com.artwl:android-update-apk:0.0.1'
-}
-```
-
-- 方式二：下载并导入 android-update-apk 库
+ allprojects {
+        repositories {
+            jcenter()
+            maven { url "https://jitpack.io" }
+        }
+   }
+   dependencies {
+        compile 'com.github.systembugtj:autoupdate:[version]'
+   }
 
 #### 2.调用 ####
 
