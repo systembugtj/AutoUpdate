@@ -1,108 +1,106 @@
-Android应用自动更新库 (android-update-apk)
+android-update-apk
 ===================
-
 [![](https://jitpack.io/v/systembugtj/autoupdate.svg)](https://jitpack.io/#systembugtj/autoupdate)
 
-v1.6.7
+[![Build Status](https://travis-ci.org/systembugtj/AutoUpdate.svg?branch=master)](https://travis-ci.org/systembugtj/AutoUpdate)
 
-Fix parse exception when network is down.
+[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
-v1.6.5
+Android app update checker, download and install apk(auto or manual). Support API level 8+
 
-Fix SDK >= 24 file:// not allowed
 
-该library项目实现了软件版本检查，apk文件下载，软件安装（Android app update checker,download and install apk）支持API 8+
+#### 1. import library ####
 
-#### 1.导入包 ####
+You can import this library in two ways:
 
-有两种方式：
-
-```gradle
-   allprojects {
-        repositories {
-            jcenter()
-            maven { url "https://jitpack.io" }
-        }
-   }
-   dependencies {
-        compile 'com.github.systembugtj:autoupdate:[version]'
-   }
+- first: Gradle
 ```
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
 
-#### 2.调用 ####
-
-提供2种调用方式, 在你的项目中添加以下代码即可
-
-- 使用Dialog
+dependencies {
+        compile 'com.github.systembugtj:autoupdate:1.6.8'
+}
 
 
-	```
-    	private static final String APP_UPDATE_SERVER_URL = "http://updatecheck";
+```
+- second: download android-update-apk library and import
+
+#### 2. import library ####
+
+You can use this library in two ways , example code:
+
+- Dialog
+
+
+    ```
+        private static final String APP_UPDATE_SERVER_URL = "http://updatecheck";
         private static final boolean APK_IS_AUTO_INSTALL = true;
 
-    	...
+        ...
 
-    	updateButton.setOnClickListener(new View.OnClickListener() {
+        updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UpdateChecker.checkForDialog(getActivity(), APP_UPDATE_SERVER_URL, APK_IS_AUTO_INSTALL);
             }
         });
 
-    	...
+        ...
 
-	```
+    ```
 
-- 使用Notification
+- Notification
 
-	```
-    	private static final String APP_UPDATE_SERVER_URL = "http://updatecheck";
+    ```
+        private static final String APP_UPDATE_SERVER_URL = "http://updatecheck";
         private static final boolean APK_IS_AUTO_INSTALL = false;
 
-    	...
+        ...
 
-    	updateButton.setOnClickListener(new View.OnClickListener() {
+        updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UpdateChecker.checkForNotification(getActivity(), APP_UPDATE_SERVER_URL, APK_IS_AUTO_INSTALL);
             }
         });
 
-    	...
+        ...
 
-	```
+    ```
 
-服务端返回的JSON数据示例格式为：
+The server response JSON data format is:
 
-`{"url":"http://192.168.205.33:8080/Hello/medtime_v3.0.1_Other_20150116.apk","versionCode":2,"updateMessage":"版本更新信息"}`
+`{"url":"http://192.168.205.33:8080/Hello/medtime_v3.0.1_Other_20150116.apk","versionCode":2,"updateMessage":"update info"}`
 
-#### 3.添加权限 ####
+#### 3. add permission ####
 
-- 添加访问网络的权限
+- Add INTERNET permission
 
-	`<uses-permission android:name="android.permission.INTERNET" />`
+    `<uses-permission android:name="android.permission.INTERNET" />`
 
-- 添加写SDCard权限（可选，非必须）
+- Add WRITE_EXTERNAL_STORAGE permission(optional)
 
-	如果添加这个权限 apk下载在sdcard中的Android/data/包名/cache目录下 否则下载到 内存中的 /data/data/包名/cache中
+    if you add this permission, apk will save in /data/packagename/cache, Otherwise save in /data/data/packagename/cache
 
-	`<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`
+    `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`
 
-#### 4.在AndroidManifest.xml中注册 DownloadService ####
+#### 4. Register DownloadService in AndroidManifest.xml ####
 
 `<service android:name="com.artwl.update.DownloadService" android:exported="true" />`
 
-#### 5.示例效果图 ####
+#### 5. sample project screens ####
 ![screenshot](https://raw.github.com/artwl/android-update-apk/master/screenshots/sample.png)
 ![screenshot](https://raw.github.com/artwl/android-update-apk/master/screenshots/dialog.png)
 ![screenshot](https://raw.github.com/artwl/android-update-apk/master/screenshots/notification.png)
 
 
-#### 6.使用与参考的开源项目 ####
+#### 6. reference opensource projects ####
 
-1. [android-styled-dialogs](https://github.com/inmite/android-styled-dialogs "https://github.com/inmite/android-styled-dialogs") 使用该项目，可以在api 8+上显示 holo 风格的对话框，其它选择
-，当然你也可以使用其它的开源项目比如：[ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock "https://github.com/JakeWharton/ActionBarSherlock") 和 [HoloEverywhere](https://github.com/Prototik/HoloEverywhere "https://github.com/Prototik/HoloEverywhere")
+1. [android-styled-dialogs](https://github.com/inmite/android-styled-dialogs "https://github.com/inmite/android-styled-dialogs")
 
-
-2. [UpdateChecker](https://github.com/rampo/UpdateChecker "https://github.com/rampo/UpdateChecker") 该项目检查的是google play上的应用，如果有更新打开google Play,不提供下载apk的功能
-
+2. [UpdateChecker](https://github.com/rampo/UpdateChecker "https://github.com/rampo/UpdateChecker")
