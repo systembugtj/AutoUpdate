@@ -23,4 +23,4 @@ android:
     - sys-img-armeabi-v7a-android-22
     - sys-img-x86-android-17
 script:
-  - ./gradlew build artifactoryPublish
+  - ./gradlew build
