@@ -8,15 +8,15 @@ android:
     - tools
     - platform-tools
     - extra-android-m2repository
-    - build-tools-23.0.3
+    - build-tools-25.0.0
 
     # The SDK version used to compile your project
-    - android-23
+    - android-25
 
     # Additional components
     - extra-google-google_play_services
     - extra-google-m2repository
-    - addon-google_apis-google-23
+    - addon-google_apis-google-25
 
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
