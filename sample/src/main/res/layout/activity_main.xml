@@ -44,4 +44,12 @@
         android:textAllCaps="false"
         android:textSize="12sp" />
 
+    <Button
+        android:id="@+id/btnCustomNotice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnNotifyAutoInstall"
+        android:text="Check Update: Custom Notice"
+        android:textAllCaps="false"
+        android:textSize="12sp" />
 </RelativeLayout>
