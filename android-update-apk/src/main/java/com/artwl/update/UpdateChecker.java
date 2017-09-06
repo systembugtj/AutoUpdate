@@ -270,7 +270,8 @@ public class UpdateChecker extends Fragment {
             } else if (description.versionCode > versionCode) {
                 description.updateMessage += String.format(" [%d --> %d]", versionCode, description.versionCode);
 
-                if (mTypeOfNotice == NOTICE_NOTIFICATION) {
+                if (mTypeOfNotice == NOTICE_NOTIFICATION ||
+                        (mTypeOfNotice == NOTICE_CUSTOM && mNotice == null)) {
                     showNotification(description.updateMessage, description.url, mIsAutoInstall, mCheckExternal);
                 } else if (mTypeOfNotice == NOTICE_DIALOG) {
                     showDialog(description.updateMessage, description.url, mIsAutoInstall, mCheckExternal);
