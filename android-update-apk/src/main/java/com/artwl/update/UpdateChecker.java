@@ -44,6 +44,7 @@ public class UpdateChecker extends Fragment {
     private static final String APK_IS_AUTO_INSTALL = "apk_is_auto_install";
     private static final int NOTICE_NOTIFICATION = 2;
     private static final int NOTICE_DIALOG = 1;
+    private static final int NOTICE_CUSTOM = 3;
     private static final String TAG = "UpdateChecker";
     private static final String HTTP_VERB = "httpverb";
 
@@ -250,7 +251,6 @@ public class UpdateChecker extends Fragment {
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, noti);
     }
-
 
     /**
      * Check if a network available
