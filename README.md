@@ -7,6 +7,9 @@ android-update-apk
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 Android app update checker, download and install apk(auto or manual). Support API level 8+
+### Update Log
+#### v1.8.0
+Support 8.0 NotificationCompat.Buidler(Context context, String channelId)
 
 
 #### 1. import library ####
@@ -23,7 +26,7 @@ allprojects {
 }
 
 dependencies {
-        compile 'com.github.systembugtj:autoupdate:1.6.8'
+        compile 'com.github.systembugtj:autoupdate:x.x.x'
 }
 
 
