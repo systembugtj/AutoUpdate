@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
@@ -39,6 +41,7 @@ import static com.artwl.update.Constants.APK_CHECK_EXTERNAL;
 
 public class UpdateChecker extends Fragment {
 
+    private static final String UPDATE_CHANNEL_ID= "AUTO_UPDATE_NOTIFY_CHANNEL";
     private static final String NOTICE_TYPE_KEY = "type";
     private static final String APP_UPDATE_SERVER_URL = "app_update_server_url";
     private static final String APK_IS_AUTO_INSTALL = "apk_is_auto_install";
@@ -211,7 +214,27 @@ public class UpdateChecker extends Fragment {
         if (Strings.isNullOrEmpty(mHttpVerb)) {
             mHttpVerb = "POST";
         }
+
+        createNotificationChannel();
+
         checkForUpdates(url);
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            String description = "Update Checker Notification";
+
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(UPDATE_CHANNEL_ID, "UpdateCheckerNotification", importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     /**
@@ -316,7 +339,7 @@ public class UpdateChecker extends Fragment {
         PendingIntent pendingIntent = PendingIntent.getService(mContext, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         int smallIcon = mContext.getApplicationInfo().icon;
-        noti = new NotificationCompat.Builder(mContext).setTicker(getString(R.string.newUpdateAvailable))
+        noti = new NotificationCompat.Builder(mContext, UPDATE_CHANNEL_ID).setTicker(getString(R.string.newUpdateAvailable))
                 .setContentTitle(getString(R.string.newUpdateAvailable)).setContentText(content).setSmallIcon(smallIcon)
                 .setContentIntent(pendingIntent).build();
 

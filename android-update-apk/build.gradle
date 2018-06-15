@@ -2,28 +2,15 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group='com.github.systembugtj'
-version="1.7.0"
-
-dependencies {
-    compile 'com.android.support:support-v4:23.1.0'
-
-    // Guava
-    provided 'com.google.guava:guava:20.0'
-    provided 'com.google.code.gson:gson:2.8.0'
-    provided 'com.squareup.okhttp3:okhttp:3.4.1'
-    provided 'com.squareup.okio:okio:1.11.0'
-
-    // OkHttp
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
-}
+version="1.8.0"
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 23
+        targetSdkVersion 27
         versionCode 1
         versionName version
     }
@@ -35,4 +22,15 @@ android {
     lintOptions {
         abortOnError false
     }
+}
+
+dependencies {
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+
+    // Guava
+    compileOnly 'com.google.guava:guava:23.3-android'
+    compileOnly 'com.google.code.gson:gson:2.8.4'
+    compileOnly 'com.squareup.okhttp3:okhttp:3.10.0'
+    compileOnly 'com.squareup.okio:okio:1.14.0'
 }

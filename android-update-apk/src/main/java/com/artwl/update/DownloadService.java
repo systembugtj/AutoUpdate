@@ -2,6 +2,7 @@ package com.artwl.update;
 
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -32,6 +33,7 @@ import okio.Okio;
 import okhttp3.internal.Util;
 
 public class DownloadService extends IntentService {
+    private static final String DOWNLOAD_NOTIFY_CHANNEL = "DOWNLOAD_NOTIFY_CHANNEL";
     private static final int BUFFER_SIZE = 10 * 1024; // 8k ~ 32K
     private static final String TAG = "AutoUpdate";
     private NotificationManager mNotifyManager;
@@ -42,10 +44,29 @@ public class DownloadService extends IntentService {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            String description = "Download Update Notification";
+
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(DOWNLOAD_NOTIFY_CHANNEL, "UpdateCheckerNotification", importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    @Override
     protected void onHandleIntent(Intent intent) {
 
         mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mBuilder = new NotificationCompat.Builder(this);
+        mBuilder = new NotificationCompat.Builder(this, DOWNLOAD_NOTIFY_CHANNEL);
 
         String appName = getString(getApplicationInfo().labelRes);
         int icon = getApplicationInfo().icon;

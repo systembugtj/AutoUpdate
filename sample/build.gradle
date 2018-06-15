@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.artwl.update.sample"
         minSdkVersion 18
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 2
         versionName "1.1"
     }
@@ -22,16 +22,17 @@ android {
 }
 
 dependencies {
-    compile project(':android-update-apk')
-    compile "com.android.support:appcompat-v7:25.1.1"
+    implementation project(':android-update-apk')
 
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.google.guava:guava:20.0+'
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
-    compile 'com.squareup.okio:okio:1.11.0'
+    implementation "com.android.support:appcompat-v7:27.1.1"
 
-    androidTestCompile 'com.android.support:support-annotations:25.1.1'
-    androidTestCompile 'com.android.support.test:runner:0.2'
-    androidTestCompile 'com.android.support.test:rules:0.2'
-    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.0'
+    implementation 'com.google.code.gson:gson:2.8.4'
+    implementation 'com.google.guava:guava:23.3-android'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okio:okio:1.14.0'
+
+    androidTestImplementation 'com.android.support:support-annotations:27.1.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
 }
