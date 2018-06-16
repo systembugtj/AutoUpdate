@@ -34,6 +34,7 @@ import okhttp3.internal.Util;
 
 public class DownloadService extends IntentService {
     private static final String DOWNLOAD_NOTIFY_CHANNEL = "DOWNLOAD_NOTIFY_CHANNEL";
+    private static final int notificationId = 1;
     private static final int BUFFER_SIZE = 10 * 1024; // 8k ~ 32K
     private static final String TAG = "AutoUpdate";
     private NotificationManager mNotifyManager;
@@ -102,11 +103,16 @@ public class DownloadService extends IntentService {
             long totalBytesRead = 0;
             int bufferSize = 8 * 1024;
             long bytesRead;
+            int lastProgress = -1;
             while ((bytesRead = source.read(sinkBuffer, bufferSize)) != -1) {
                 sink.emit();
                 totalBytesRead += bytesRead;
                 int progress = (int) ((totalBytesRead * 100) / contentLength);
-                updateProgress(progress);
+
+                if (progress != lastProgress) {
+                    lastProgress = progress;
+                    updateProgress(lastProgress);
+                }
             }
             sink.flush();
 
@@ -120,14 +126,15 @@ public class DownloadService extends IntentService {
 
             Intent installAPKIntent = new Intent(Intent.ACTION_VIEW);
             installAPKIntent.setDataAndType(fileUri, "application/vnd.android.package-archive");
+
             if (isAutoInstall) {
-                installAPKIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                installAPKIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (Build.VERSION.SDK_INT >= 24) {
                     intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
                     installAPKIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 }
                 startActivity(installAPKIntent);
-                mNotifyManager.cancel(0);
+                mNotifyManager.cancel(notificationId);
                 return;
             }
 
@@ -140,7 +147,7 @@ public class DownloadService extends IntentService {
             mBuilder.setContentIntent(pendingIntent);
             Notification noti = mBuilder.build();
             noti.flags = android.app.Notification.FLAG_AUTO_CANCEL;
-            mNotifyManager.notify(0, noti);
+            mNotifyManager.notify(notificationId, noti);
 
         } catch (Exception e) {
             Log.e(TAG, "download apk file error", e);
@@ -152,9 +159,9 @@ public class DownloadService extends IntentService {
 
     private void updateProgress(int progress) {
         mBuilder.setContentText(this.getString(R.string.download_progress, progress)).setProgress(100, progress, false);
-        PendingIntent pendingintent = PendingIntent.getActivity(this, 0, new Intent(), PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingintent = PendingIntent.getActivity(this, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pendingintent);
-        mNotifyManager.notify(0, mBuilder.build());
+        mNotifyManager.notify(notificationId, mBuilder.build());
     }
 
 }

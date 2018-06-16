@@ -11,6 +11,10 @@ Android app update checker, download and install apk(auto or manual). Support AP
 #### v1.8.0
 Support 8.0 NotificationCompat.Buidler(Context context, String channelId)
 
+Add below permission to allow auto install.
+```xml
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+```
 
 #### 1. import library ####
 
