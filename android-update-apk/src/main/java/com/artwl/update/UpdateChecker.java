@@ -301,7 +301,7 @@ public class UpdateChecker extends Fragment {
                     showDialog(description.updateMessage, description.url, mIsAutoInstall, mCheckExternal);
                 }
             } else {
-                Log.i(TAG, mContext.getString(R.string.app_no_new_update));
+                Log.i(TAG, mContext.getString(R.string.app_no_new_update) + "Remote: " + description.versionCode);
             }
         } catch (PackageManager.NameNotFoundException ignored) {
             Log.e(TAG, "parse json error", ignored);
