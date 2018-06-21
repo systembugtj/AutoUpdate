@@ -1,0 +1,2 @@
+# Gson related class.
+-keep class com.artwl.update.entity.** { *; }
