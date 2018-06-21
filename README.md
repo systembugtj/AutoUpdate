@@ -8,6 +8,27 @@ android-update-apk
 
 Android app update checker, download and install apk(auto or manual). Support API level 8+
 ### Update Log
+#### v2.1.0
+Add consumer proguard rules to keep Gson convert related class. No need to add extra proguard.
+#### v2.0.0
+Use rxjava instead of thread
+Gradle, add below dependencies to your project.
+```groovy
+dependencies {
+    implementation 'com.google.code.gson:gson:2.8.4'
+    implementation 'com.google.guava:guava:23.3-android'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okio:okio:1.14.0'
+    implementation "io.reactivex.rxjava2:rxjava:2.1.1"
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
+}
+```
+
+
+For proguard.
+```proguard
+-keep class com.conouch.browasa.entity.** { *; }
+```
 #### v1.8.0
 Support 8.0 NotificationCompat.Buidler(Context context, String channelId)
 
@@ -30,7 +51,7 @@ allprojects {
 }
 
 dependencies {
-        compile 'com.github.systembugtj:autoupdate:x.x.x'
+    implementation 'com.github.systembugtj:autoupdate:x.x.x'
 }
 
 
