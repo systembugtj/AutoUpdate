@@ -272,6 +272,7 @@ public class UpdateChecker extends Fragment {
             Response response = client.newCall(request).execute();
             return response.body().string();
         } catch (IOException ex) {
+            Log.d("UpdateChecker", "Failed to get update json", ex);
             return "";
         }
     }
