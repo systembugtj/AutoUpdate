@@ -1,17 +1,5 @@
 package com.artwl.update;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.zip.GZIPInputStream;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -33,6 +21,12 @@ import com.artwl.update.entity.UpdateDescription;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 
+import java.io.IOException;
+
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -55,7 +49,6 @@ public class UpdateChecker extends Fragment {
     private static final String CUSTOM_NOTICE = "custom_notice";
 
     private FragmentActivity mContext;
-    private Thread mThread;
     private int mTypeOfNotice;
     private boolean mIsAutoInstall;
     private boolean mCheckExternal;
@@ -242,45 +235,36 @@ public class UpdateChecker extends Fragment {
      * parsing the desktop Play Store page of the app
      */
     private void checkForUpdates(final String url) {
-        mThread = new Thread() {
-            @Override
-            public void run() {
-                //if (isNetworkAvailable(mContext)) {
 
-                String json = sendPost(url);
-                if (json != null) {
-                    parseJson(json);
-                } else {
-                    Log.e(TAG, "can't get app update json");
-                }
-                //}
-            }
-
-        };
-        mThread.start();
+       sendPost(url)
+               .subscribeOn(Schedulers.io())
+               .observeOn(AndroidSchedulers.mainThread())
+               .subscribe(content -> {
+                   parseJson(content);
+               });
     }
 
-    private String sendPost(String url) {
+    private Observable<String> sendPost(String url) {
 
-        try {
-            OkHttpClient client = new OkHttpClient();
+        return Observable.fromCallable(() -> {
+            try {
+                OkHttpClient client = new OkHttpClient();
 
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
+                Request request = new Request.Builder()
+                        .url(url)
+                        .build();
 
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        } catch (IOException ex) {
-            Log.d("UpdateChecker", "Failed to get update json", ex);
-            return "";
-        }
+                Response response = client.newCall(request).execute();
+                return response.body().string();
+            } catch (IOException ex) {
+                Log.d(TAG, "Failed to get update json", ex);
+                return "";
+            }
+        });
     }
 
 
     private void parseJson(String json) {
-        mThread.interrupt();
-        Looper.prepare();
         UpdateDescription description = new Gson().fromJson(json, UpdateDescription.class);
 
         if (description == null) {

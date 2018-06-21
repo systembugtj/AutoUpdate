@@ -2,14 +2,19 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group='com.github.systembugtj'
-version="1.8.2"
+version="2.0.0"
 
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName version
@@ -17,11 +22,13 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            debuggable true
         }
     }
     lintOptions {
         abortOnError false
     }
+
 }
 
 dependencies {
@@ -33,4 +40,6 @@ dependencies {
     compileOnly 'com.google.code.gson:gson:2.8.4'
     compileOnly 'com.squareup.okhttp3:okhttp:3.10.0'
     compileOnly 'com.squareup.okio:okio:1.14.0'
+    compileOnly "io.reactivex.rxjava2:rxjava:2.1.1"
+    compileOnly "io.reactivex.rxjava2:rxandroid:2.0.2"
 }
